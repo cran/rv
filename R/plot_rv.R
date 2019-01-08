@@ -1,9 +1,56 @@
-
+#' Plotting Scatterplots of Random Variable Objects
+#' 
+#' Draw a "random scatter plot" or random points as horizontal or vertical
+#' intervals.
+#' 
+#' If a component \code{x} is fixed and the corresponding component of \code{y}
+#' is random, the resulting `point' is a vertical uncertainty ('credible')
+#' interval.  \emph{NOTE.} You must call \code{plot.rv} explicitly to obtain
+#' this behavior.
+#' 
+#' If a component \code{y} is fixed and the corresponding component of \code{x}
+#' is random, the resulting `point' is a horizontal uncertainty ('credible')
+#' interval.
+#' 
+#' If a component of \code{x} and the corresponding component of \code{y} is
+#' random, the resulting `point' is a scatterplot of simulations from the joint
+#' distribution of code(x,y).
+#' 
+#' Compatible with objects of class `rvsummary'.
+#' 
+#' @aliases plot.rv plot.rvsummary
+#' @param x an rv object
+#' @param y random or fixed vector
+#' @param \dots other arguments passed on to \code{plot}
+#' @author Jouni Kerman \email{jouni@@kerman.com}
+#' @seealso \code{\link{mlplot}}
+#' @references Kerman, J. and Gelman, A. (2007). Manipulating and Summarizing
+#' Posterior Simulations Using Random Variable Objects. Statistics and
+#' Computing 17:3, 235-244.
+#' 
+#' See also \code{vignette("rv")}.
+#' @keywords aplot
+#' @examples
+#' 
+#'   x <- as.rv(1:30)
+#'   y <- rvnorm(mean=x, sd=1)
+#'   \dontrun{plot(x, y)}
+#'   \dontrun{plot(y, x)}
+#'   \dontrun{plot(y)}
+#'   y <- as.rvsummary(x)
+#'   \dontrun{plot(x, y)}
+#'   \dontrun{plot(y, x)}
+#'   \dontrun{plot(y)}
+#' 
+#' @export
+#' @method plot rv
 plot.rv <- function (x, y=NULL, ...)
 { 
   .plot.default.rv(x, y, ...)
 }
 
+#' @method plot rvsummary
+#' @export
 plot.rvsummary <- function (x, y=NULL, ...)
 { 
   .plot.default.rv(x, y, ...)
@@ -16,6 +63,7 @@ plot.rvsummary <- function (x, y=NULL, ...)
 
 .plot.xy.rv <- function (xy, type, pch = par("pch"), lty = par("lty"), col = par("col"), bg = NA, cex = 1, lwd = par("lwd"), ...)
 {
+  
   ##if (is.null(xy$rv)) {
   ##  return(.Internal(plot.xy(xy, type, pch, lty, col, bg, cex, lwd, ...)))
   ##}
@@ -118,13 +166,14 @@ plot.rvsummary <- function (x, y=NULL, ...)
     return(list(x = as.double(x), y = as.double(y), xlab = xlab, ylab = ylab))
 }
 
-
+#' @importFrom graphics plot.window Axis box title plot.new
 .plot.default.rv <- function (x, y = NULL, type = "p", xlim = NULL, ylim = NULL, log = "", main = NULL, sub = NULL, xlab = NULL, ylab = NULL, ann = par("ann"), axes = TRUE, frame.plot = axes, panel.first = NULL, panel.last = NULL, asp = NA, rvlwd = rvpar("rvlwd"),  rvcol=rvpar("rvcol"), rvpoint=rvpar("rvpoint"), rvlex=rvpar("rvlex"), ...) 
 {
-    localAxis <- function(..., col, bg, pch, cex, lty, lwd) Axis(...)
-    localBox <- function(..., col, bg, pch, cex, lty, lwd) box(...)
+
+    localAxis   <- function(..., col, bg, pch, cex, lty, lwd) Axis(...)
+    localBox    <- function(..., col, bg, pch, cex, lty, lwd) box(...)
     localWindow <- function(..., col, bg, pch, cex, lty, lwd) plot.window(...)
-    localTitle <- function(..., col, bg, pch, cex, lty, lwd) title(...)
+    localTitle  <- function(..., col, bg, pch, cex, lty, lwd) title(...)
     xlabel <- if (!missing(x)) 
         deparse(substitute(x))
     ylabel <- if (!missing(y)) 

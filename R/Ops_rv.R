@@ -2,8 +2,12 @@
 # rv-Ops.R - standard math functions for the rv class
 # TODO
 #  
-
-Ops.rv <- function(e1, e2=NULL)
+#' @rdname Math.rv
+#' @param e1 object
+#' @param e2 object
+#' @method Ops rv
+#' @export
+Ops.rv <- function(e1, e2 = NULL)
 {
   e1.attr <- attributes(e1)
   e2.attr <- attributes(e2)
@@ -21,6 +25,8 @@ Ops.rv <- function(e1, e2=NULL)
   return(v)
 }
 
+#' @method ! rv
+#' @export
 "!.rv" <- function(e1) 
 {
   v <- simapply(e1, .Generic)

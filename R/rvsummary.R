@@ -1,12 +1,92 @@
+#' Random Vector Summaries
+#' 
+#' \code{rvsummary} is a class of objects that hold the summary information on
+#' each scalar component of a random variable (quantiles, mean, sd, number of
+#' simulations etc.)
+#' 
+#' The \code{rvsummary} class provides a means to store a concise
+#' representation of the marginal posterior distributions of the vector
+#' components.  By default, the 201 quantiles \preformatted{ 0, 0.005, 0.01,
+#' 0.015, ..., 0.990, 0.995, 1 } are saved for each vector component in an
+#' \code{rvsummary} object.
+#' 
+#' \code{is.rvsummary} tests whether the object is an \code{rvsummary} object;
+#' \code{as.rvsummary} coerces a random vector object to a \code{rvsummary}
+#' object.
+#' 
+#' \code{as.data.frame} is another way to obtain the data frame that is
+#' produced by the \code{summary} method.
+#' 
+#' A data frame that has the format of an \code{rv} summary can be coerced into
+#' an \code{rvsummary}; if quantiles are not specified within the data frame,
+#' quantiles from the Normal distribution are filled in, if the mean and s.d.
+#' are given.
+#' 
+#' Therefore, the following (generic) functions work with \code{rvsummary}
+#' objects: \code{rvmean}, \code{rvsd}, \code{rvvar}, \code{rvquantile},
+#' \code{rnsims}, \code{sims}, and consequently any `rv-only' function that
+#' depends only on these functions will work; e.g. \code{is.constant}, which
+#' depends only on \code{rvnsims}.
+#' 
+#' The method \code{is.double} is provided for compatibility reasons; this is
+#' needed in a function called by \code{plot.rvsummary}
+#' 
+#' The arithmetic operators and mathematical functions will not work with
+#' \code{rvsummary} objects.
+#' 
+#' The \code{sims} method returns the quantiles.
+#' 
+#' @aliases rvsummary is.rvsummary as.rvsummary as.rvsummary.rv
+#' as.rvsummary.rvsummary as.rvsummary.data.frame as.data.frame.rvsummary
+#' print.rvsummary print.rvsummary_rvfactor as.double.rvsummary
+#' @param x object to be coerced or tested
+#' @param \dots further arguments passed to or from other methods.
+#' @name summaries
+#' @return An object of class \code{rvsummary} \emph{and} of subclass
+#' \code{rvsummary_numeric}, \code{rvsummary_integer},
+#' \code{rvsummary_logical}, or \code{rvsummary_rvfactor}.
+#' @author Jouni Kerman \email{jouni@@kerman.com}
+#' @seealso \code{\link{rvfactor}}
+#' @references Kerman, J. and Gelman, A. (2007). Manipulating and Summarizing
+#' Posterior Simulations Using Random Variable Objects. Statistics and
+#' Computing 17:3, 235-244.
+#' 
+#' See also \code{vignette("rv")}.
+#' @keywords classes
+#' @examples
+#' 
+#'   x <- rvnorm(mean=1:12)
+#'   sx <- as.rvsummary(x)
+#'   print(sx)          # prints the summary of the rvsummary object
+#'   length(sx)         # 12
+#'   dim(sx)            # NULL
+#'   dim(sx) <- c(3,4)  #   
+#'   dimnames(sx) <- list(1:3, 1:4)
+#'   names(sx) <- 1:12  # 
+#'   print(sx)          # prints the names and dimnames as well  
+#' 
+NULL
 
+#' Coerce an object to an rvsummary
+#' 
+#' @rdname summaries
+#' @export
 as.rvsummary <- function (x, ...) {
   UseMethod("as.rvsummary")
 }
 
+#' Check if an object is an rvsummary
+#' 
+#' @inheritParams as.rvsummary
+#' @rdname summaries
+#' @export
 is.rvsummary <- function (x) {
   inherits(x, "rvsummary")
 }
 
+#' @export
+#' @inheritParams base::round
+#' @method print rvsummary
 print.rvsummary <- function (x, digits=3, ...) # METHOD
 {
   s <- summary(x)
@@ -16,11 +96,15 @@ print.rvsummary <- function (x, digits=3, ...) # METHOD
   print(s)
 }
 
+#' @export
+#' @method as.rvsummary default
 as.rvsummary.default <- function (x, ...)  # NOEXPORT
 {
   as.rvsummary(as.rv(x), ...)
 }
 
+#' @export
+#' @method as.rvsummary rv
 as.rvsummary.rv <- function (x, quantiles=(0:200/200), ...)  # NOEXPORT
 {
   y <- if (is.logical(x)) {
@@ -33,15 +117,16 @@ as.rvsummary.rv <- function (x, quantiles=(0:200/200), ...)  # NOEXPORT
   return(y)
 }
 
-
-
-
-
+#' @export
+#' @method as.rvsummary rvsummary
 as.rvsummary.rvsummary <- function (x, ...)  # NOEXPORT
 {
   return(x)
 }
 
+#' @export
+#' @method as.rvsummary rvnumeric
+#' @importFrom stats quantile
 as.rvsummary.rvnumeric <- function (x, quantiles=(0:200/200), ...) # NOEXPORT
 {
   ms <- .rvmeansd(x, names.=c("mean", "sd", "NAS", "n.sims"))
@@ -57,6 +142,8 @@ as.rvsummary.rvnumeric <- function (x, quantiles=(0:200/200), ...) # NOEXPORT
   structure(x, class=c("rvsummary_numeric", "rvsummary"), quantiles=quantiles)
 }
 
+#' @export
+#' @method as.rvsummary rvinteger
 as.rvsummary.rvinteger <- function (x, quantiles=(0:200/200), ...) # NOEXPORT
 {
   ms <- .rvmeansd(x, names.=c("mean", "sd", "NAS", "n.sims"))
@@ -72,8 +159,8 @@ as.rvsummary.rvinteger <- function (x, quantiles=(0:200/200), ...) # NOEXPORT
   structure(x, class=c("rvsummary_integer", "rvsummary"), quantiles=quantiles)
 }
 
-
-
+#' @export
+#' @method as.rvsummary rvlogical
 as.rvsummary.rvlogical <- function (x, ...) # NOEXPORT
 {
   ms <- .rvmeansd(x, names.=c("mean", "sd", "NAS", "n.sims"))
@@ -88,6 +175,8 @@ as.rvsummary.rvlogical <- function (x, ...) # NOEXPORT
   structure(x, class=c("rvsummary_logical", "rvsummary"))
 }
 
+#' @export
+#' @method as.rvsummary rvfactor
 as.rvsummary.rvfactor <- function (x, ...) # NOEXPORT
 {
   levels <- levels(x)
@@ -125,6 +214,11 @@ as.rvsummary.rvfactor <- function (x, ...) # NOEXPORT
   structure(x, class=c("rvsummary_rvfactor", "rvsummary"))
 }
 
+#' @export
+#' @method as.rvsummary data.frame
+#' @rdname summaries
+#' @param quantiles quantiles to calculate and store in the object
+#' @importFrom stats qnorm
 as.rvsummary.data.frame <- function (x, quantiles=rvpar("summary.quantiles.numeric"), ...)
 {
   name <- names(x)
@@ -155,6 +249,8 @@ as.rvsummary.data.frame <- function (x, quantiles=rvpar("summary.quantiles.numer
   structure(x, class=c("rvsummary_numeric", "rvsummary"), quantiles=d.quantiles, names=rnames)
 }
 
+#' @export
+#' @method as.double rvsummary
 as.double.rvsummary <- function (x, ...)
 {
   if (is.null(attr(x, "quantiles"))) {
@@ -163,11 +259,19 @@ as.double.rvsummary <- function (x, ...)
   return(x)
 }
 
+#' @export
+#' @param all.levels logical; whether to print all levels or not (see below for
+#'  details)
+#' @rdname summaries
+#' 
+#' @method print rvsummary_rvfactor
 print.rvsummary_rvfactor <- function (x, all.levels=FALSE, ...) # METHOD
 {
   print(summary(x, all.levels=all.levels, ...))
 }
 
+#' @export
+#' @method as.data.frame rvsummary
 as.data.frame.rvsummary <- function (x, ...) {
   S <- summary(x, ...)
   rownames(S) <- S[["name"]]
@@ -175,6 +279,8 @@ as.data.frame.rvsummary <- function (x, ...) {
   return(S)
 }
 
+#' @export
+#' @method summary rvsummary
 summary.rvsummary <- function (object, ...)
 {
   # supposed to be called AFTER other methods (e.g. summary.rvsummary_rvnumeric)
@@ -230,6 +336,8 @@ summary.rvsummary <- function (object, ...)
   return(Summary)
 }
 
+#' @export
+#' @method summary rvsummary_numeric
 summary.rvsummary_numeric <- function (object, ...)
 {
   x <- object
@@ -249,6 +357,8 @@ summary.rvsummary_numeric <- function (object, ...)
   NextMethod()
 }
 
+#' @export
+#' @method summary rvsummary_logical
 summary.rvsummary_logical <- function (object, ...)
 {
   x <- object
@@ -258,6 +368,8 @@ summary.rvsummary_logical <- function (object, ...)
   NextMethod()
 }
 
+#' @export
+#' @method summary rvsummary_integer
 summary.rvsummary_integer <- function (object, ...)
 {
   x <- object
@@ -282,7 +394,8 @@ summary.rvsummary_integer <- function (object, ...)
 }
 
 
-
+#' @method summary rvsummary_rvfactor
+#' @export
 summary.rvsummary_rvfactor <- function (object, all.levels=TRUE, ...) 
 {
   x <- object

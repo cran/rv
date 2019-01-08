@@ -1,9 +1,40 @@
-
-
+#' Retrieve the Simulations of Random Vectors
+#' 
+#' Returns the simulation matrix for the random variable object \code{x}.
+#' 
+#' \code{sims} returns the matrix of simulations for a given random variable
+#' object \code{x}.
+#' 
+#' The first index of the matrix indicates the number of the simulation draw
+#' ("simulations are in rows").
+#' 
+#' @aliases sims sims.rv sims.rvsummary sims.default
+#' @param x a random variable object
+#' @param \dots arguments passed on
+#' @author Jouni Kerman \email{jouni@@kerman.com}
+#' @references Kerman, J. and Gelman, A. (2007). Manipulating and Summarizing
+#' Posterior Simulations Using Random Variable Objects. Statistics and
+#' Computing 17:3, 235-244.
+#' 
+#' See also \code{vignette("rv")}.
+#' @keywords classes
+#' @examples
+#' 
+#'   setnsims(n.sims=2500)
+#'   x <- rvnorm(24)
+#'   dim(x) <- c(2,3,4)
+#'   dim(sims(x))                  # 2500x24
+#'   dim(sims(x, dimensions=TRUE)) # 2500x2x3x4
+#' 
+#' @export sims
 sims <- function(x, ...) {
   UseMethod("sims")
 }
 
+#' @rdname sims
+#' @param dimensions logical, try to preserve the dimensions of \code{x}
+#' @method sims rvsummary
+#' @export
 sims.rvsummary <- function(x, dimensions=FALSE,  ...) {
   ## NOEXPORT
   S <- matrix(unlist(x, use.names=FALSE), nrow=length(x[[1]]))
@@ -27,6 +58,8 @@ sims.rvsummary <- function(x, dimensions=FALSE,  ...) {
   return(S)
 }
 
+#' @method sims default
+#' @export
 sims.default <- function(x, ...) {
   ## NOEXPORT
   ##
@@ -57,7 +90,11 @@ sims.default <- function(x, ...) {
  ###, as.list=FALSE)
 
 
-
+#' @rdname sims
+#' @param n.sims (optional) number of simulations
+#' 
+#' @method sims rv
+#' @export
 sims.rv <- function(x, dimensions=FALSE, n.sims=getnsims(), ...) {
   ## NOEXPORT
   if (length(x)<1) {

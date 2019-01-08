@@ -1,9 +1,47 @@
-
-
+#' Categorical Random Variables (Random Factors)
+#' 
+#' Creates or tests for objects of type "\code{rvfactor}".
+#' 
+#' Internally random factors are integer-valued just like regular factors in R.
+#' 
+#' The number of levels to print when \code{all.levels==FALSE} can be set by
+#' \code{rvpar(max.levels=...)}. By default this is set to 10.
+#' 
+#' @aliases rvfactor rvfactor.rv is.rvfactor as.rvfactor as.rv.rvfactor
+#' print.rvfactor
+#' @param x object to be coerced or tested.
+#' @param \dots other arguments
+#' @return \code{rvfactor}: an \code{rvfactor} object.
+#' 
+#' \code{is.rvfactor}: \code{TRUE} or \code{FALSE}.
+#' 
+#' \code{as.rv.rvfactor}: an \code{rv} object.
+#' 
+#' \code{as.rvfactor.rv}: an \code{rvfactor} object.
+#' @author Jouni Kerman \email{jouni@@kerman.com}
+#' @references Kerman, J. and Gelman, A. (2007). Manipulating and Summarizing
+#' Posterior Simulations Using Random Variable Objects. Statistics and
+#' Computing 17:3, 235-244.
+#' 
+#' See also \code{vignette("rv")}.
+#' @keywords classes
+#' @examples
+#' 
+#'   # Probabilities of each integer of trunc(Z) where Z ~ N(0,1) ?
+#'   x <- rvnorm(1)
+#'   rvfactor(trunc(x))
+#'   rvfactor(x>0)
+#'   rvfactor(rvpois(1, lambda=0.5))
+#' 
+#' @export rvfactor
 rvfactor <- function (x, ...) {
   UseMethod("rvfactor")
 }
 
+#' @rdname rvfactor
+#' @param levels factor levels (labels for the levels)
+#' @method rvfactor default
+#' @export
 rvfactor.default <- function (x, levels=NULL, ...) {
   f <- as.factor(x)
   a <- sims(as.rv(as.integer(f)))
@@ -17,7 +55,8 @@ rvfactor.default <- function (x, levels=NULL, ...) {
   return(rvf)
 }
 
-
+#' @method rvfactor rv
+#' @export
 rvfactor.rv <- function (x, levels=NULL, ...) {
   a <- sims(x)
   f <- as.factor(a)
@@ -32,32 +71,44 @@ rvfactor.rv <- function (x, levels=NULL, ...) {
   return(rvf)
 }
 
+#' @export
+#' @method is.numeric rvfactor
 is.numeric.rvfactor <- function (x) {
   FALSE
 }
 
+#' @export
 is.rvfactor <- function (x) {
   UseMethod("is.rvfactor")
 }
 
+#' @method is.rvfactor rvfactor
+#' @export
 is.rvfactor.rvfactor <- function (x) {
   TRUE
 } 
 
+#' @method is.rvfactor rv
+#' @export
 is.rvfactor.rv <- function (x) {
   all(rvsimapply(x, is.factor))
 } 
 
+#' @method is.rvfactor default
+#' @export
 is.rvfactor.default <- function (x) {
   FALSE
 } 
 
+#' @export
 as.rvfactor <- function (x, ...)
 {
   if (is.rvfactor(x)) x else rvfactor(x)
 } 
 
 
+#' @method as.rv rvfactor
+#' @export
 as.rv.rvfactor <- function (x, ...) {
   return(x)
   attr(x, "levels") <- NULL
@@ -67,6 +118,7 @@ as.rv.rvfactor <- function (x, ...) {
   return(x)
 }
 
+#' @export
 "[.rvfactor" <- function (x, ..., drop = FALSE) {
   y <- NextMethod("[")
   attr(y, "levels") <- attr(x, "levels")
