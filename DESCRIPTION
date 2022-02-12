@@ -1,11 +1,11 @@
 Package: rv
 Title: Simulation-Based Random Variable Objects
-Version: 2.3.4
+Version: 2.3.5
 Authors@R: c(
   person("Jouni", "Kerman", role = c("aut"), email = "jouni@kerman.com"),
-  person("Joseph", "Stachelek", role = c("ctb", "cre"), email = "stachel2@msu.edu")
+  person("Jemma", "Stachelek", role = c("ctb", "cre"), email = "stachel2@msu.edu")
   )
-Maintainer: Joseph Stachelek <stachel2@msu.edu>
+Maintainer: Jemma Stachelek <stachel2@msu.edu>
 URL: https://github.com/jsta/rv
 BugReports: https://github.com/jsta/rv/issues
 Description: Implements a simulation-based random variable class and a suite of
@@ -15,12 +15,12 @@ Description: Implements a simulation-based random variable class and a suite of
 Depends: R(>= 2.15.1), stats, utils, grDevices, graphics
 License: GPL-2
 Encoding: UTF-8
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.2
 Suggests: knitr, rmarkdown, testthat
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2020-02-03 17:30:37 UTC; jose
+Packaged: 2022-02-12 03:20:27 UTC; jemma
 Author: Jouni Kerman [aut],
-  Joseph Stachelek [ctb, cre]
+  Jemma Stachelek [ctb, cre]
 Repository: CRAN
-Date/Publication: 2020-02-03 18:10:03 UTC
+Date/Publication: 2022-02-12 23:10:06 UTC

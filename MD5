@@ -1,7 +1,7 @@
 94d55d512a9ba36caa9b7df079bae19f *COPYING
-01e950f7c099251730cbc417ac0607c1 *DESCRIPTION
+280a96dd85d8787c9582afc06f03f507 *DESCRIPTION
 b51c8bdf1f7f6006aca46fd2a5d46d90 *NAMESPACE
-5b6ac403dd0db0f927fe05df442fdd27 *NEWS.md
+4ae20b0adc65968d4b6a35507487f2fa *NEWS.md
 8e5efbad89f0d7236d1b9e5d700c5439 *R/00rvheader.R
 2e52c07a39feda3ba561a1b9b41c2112 *R/Extract_rv.R
 3bda4da27e98a75dfb953069896ced2a *R/Math_rv.R
@@ -12,7 +12,7 @@ f05ddd1e715cf8ded9b6b7f6abb5f33f *R/anyisrv.R
 8e235e3ce0cb3a5c67a8e61e6c4e643b *R/aperm_rv.R
 7a816865db9f02b8db0c4bde96e7385c *R/apply_rv.R
 a59102e28ba7e0628d27bc45a8e01f3f *R/as.rv.R
-ba96279141d2d6e1cd9e61b97fa0b53d *R/as.rv.stanfit.R
+1c7d26890dcc60b4e0ac1be858245e96 *R/as.rv.stanfit.R
 f06582ede0149f56c83ed96d25b99fd5 *R/as_list_rv.R
 043747ae7dba029a43191fba084e7200 *R/as_rv_bugs.R
 a853f19449e04258bc6154d4c951f650 *R/as_vector_rv.R
@@ -120,13 +120,13 @@ efbaa1143f9af7805d929d4e26b24af3 *R/solve_rv.R
 9d1c887e6307e384dcdda4583c3e65ff *R/unlist_rv.R
 d6c7a8f1f278571414cf014da83f7b74 *R/var_rv.R
 8f4a3c1437f7bfd64a3ea62a9fac4690 *R/zzz_rv.R
-573f6f38ce07da9cb546938fdcf2f0c8 *README.md
-a1e01b853b47c0a263f7d1ed803437f5 *build/vignette.rds
-ea6a716f2919a960feb773c249906ea4 *inst/CITATION
+54a02c622cd89b2c62c57969e35ea5d5 *README.md
+5bb35005c5e5eebd7284697d07a7643b *build/vignette.rds
+d56d4e84ec6cecd00ef4d17aec61caff *inst/CITATION
 d3c91a0d5ed85ee191e5d3be0fdce927 *inst/ChangeLog
 fd32ec4d56bba40df28cf63d3e9e29f4 *inst/doc/rv-doc.R
-bac5e20e76849634e1d2b04339d80fff *inst/doc/rv-doc.Rmd
-a69f779bf52d5ea0362354a5b9107e95 *inst/doc/rv-doc.html
+f4ae76da440789b7559facd1c668321a *inst/doc/rv-doc.Rmd
+12b654fe0b516af01478abe77020169b *inst/doc/rv-doc.html
 f451ca8aa1fd315710cc3106d6053d82 *man/Extract-rv.Rd
 066c0a6b9a419f4359541d0263605992 *man/Extremes-rv.Rd
 e58d06a452762ac6c1d7d5a011960353 *man/Math.rv.Rd
@@ -138,7 +138,7 @@ bdc05e4002bbef40afd8df6c1c68288f *man/as.integer.rv.Rd
 324c811e39deaeb5fd95b3d7a2bb7b9b *man/as.list.rv.Rd
 53fc0cbf9f88891d20b40fd95d4e2aa9 *man/as.logical.rv.Rd
 3e98d67efc0ac5ff3a489c0800fe3883 *man/as.rv.bugs.Rd
-25ac276fc0b92bc4ff3b0585b106fc77 *man/as.rv.stanfit.Rd
+f00ea7334dc31775925905906f09c5a4 *man/as.rv.stanfit.Rd
 dd1b2c97bd5dc71463768c406e6eef6d *man/as.vector.rv.Rd
 52f3f08337d25e4a9ef449ea914b02e7 *man/cbind.rv.Rd
 d8f5004ffa515f21c42b430045ec5ab2 *man/cc.Rd
@@ -226,4 +226,4 @@ bbfbe80ed007dfdcf4a09fdfe001944e *tests/testthat.R
 53907da000220e28b9c96166fd4a2eb8 *tests/testthat/test-Ops.R
 c6ca978c813ca19209dd18c7cefe42db *tests/testthat/test-coercion.R
 fb9de3e21042cadb5881f13dfdc87d1c *tests/testthat/test-rvnorm.R
-bac5e20e76849634e1d2b04339d80fff *vignettes/rv-doc.Rmd
+f4ae76da440789b7559facd1c668321a *vignettes/rv-doc.Rmd
